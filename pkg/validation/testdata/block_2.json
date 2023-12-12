@@ -1,0 +1,63 @@
+{
+  "block": {
+    "header": {
+      "merkleRoot": "0xbfa2a8980e2d3e4b03ab437c41b7e60dcad59c3d856d66aea76e4bfa059faa59",
+      "rlpMerkleRoot": "0x",
+      "prevHash": "0xae37d32615f00c78a86f698050368d8cd1e8c262ad46aefb7dabcbfe4b800e67",
+      "number": 2
+    },
+    "blockHash": "0xd1ede2e05516f7ab05ddc7551a2fa48affc1de46d64fa6b753fe00c8e5c4eb39"
+  },
+  "confirmedTransactions": [
+    {
+      "transaction": {
+        "body": {
+          "input0": {
+            "blockNumber": 1,
+            "transactionIndex": 0,
+            "outputIndex": 1,
+            "depositNonce": "0"
+          },
+          "input0ConfirmSigs": [
+            "0x2f29fb4e38214712cb3e5dc05904948c4568f8ee73f1fbcc015b5b639f2e3ff02f3a2c48d9a5da7c0fa325d2f1cf949da6e8bd5f274cf0ef564275ae33e00e5800",
+            "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "input1": {
+            "blockNumber": 0,
+            "transactionIndex": 0,
+            "outputIndex": 0,
+            "depositNonce": "0"
+          },
+          "input1ConfirmSigs": [
+            "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "output0": {
+            "owner": "0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef",
+            "amount": "1000"
+          },
+          "output1": {
+            "owner": "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
+            "amount": "999999899999000"
+          },
+          "fee": "0",
+          "blockNumber": 2,
+          "transactionIndex": 0
+        },
+        "sigs": [
+          "0x01ec71890d2a0347e9ebc54786b2b3b3941219ec02cf903071a5ab80e16a50771aa212226fc04b3661acf10414361ec745ba743db4de7d295128a077561c571e00",
+          "0x01ec71890d2a0347e9ebc54786b2b3b3941219ec02cf903071a5ab80e16a50771aa212226fc04b3661acf10414361ec745ba743db4de7d295128a077561c571e00"
+        ]
+      },
+      "confirmSigs": [
+        "0x1cdbb2004c9ce1f8d1a3ef0d9b3aa14417af7df98c567c005ae07b9e7005601d61794774d75e634a79f76eb7823ac0ae7195ad9f1a5a39a6dbb0cc408b4b1a4701",
+        "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      ]
+    }
+  ],
+  "metadata": {
+    "createdAt": 1551680741,
+    "transactionCount": 1,
+    "fees": 0
+  }
+}
