@@ -1,0 +1,140 @@
+# Plasma Core - MarsOccupied
+
+This project is a golang implementation and extension of the Minimum Viable Plasma specification. Maintained by the MarsOccupied team.
+
+We aim to build a Plasma implementation that can withstand the rigors of production deployment while retaining as much trustlessness as possible.
+
+**Note:** while Plasma is rapidly approaching mainnet readiness, it should still be considered alpha-quality software.
+
+## Smart Contract
+
+This implementation uses the FourthState plasma-mvp-rootchain smart contract.
+
+## Architecture
+
+This implementation uses a proof-of-authority model. The authority owns root nodes that facilitate child chain transactions and create blocks on the Plasma Contract. Users on the child chain ensure security by running validator nodes, which monitor the validity of each plasma block, and perform exits if problems are detected.
+
+The following are three main parts of the system:
+
+### Root Nodes:
+
+1. Processing deposits and exits via the Plasma smart contract it owns.
+2. Processing transactions and packaging them into blocks.
+3. Broadcasting blocks to validator nodes.
+4. Reporting new blocks to the Plasma smart contract.
+
+### Validator Nodes:
+
+1. Checking the validity of every block emitted by a root node.
+2. Checking the validity of block headers on the Plasma contract.
+3. Exiting the Plasma chain if malfeasance is detected.
+
+### Plasma Contract:
+
+1. A smart contract on the Ethereum root chain.
+2. Supports deposits, block submission, exits, and challenges.
+
+## Binaries
+
+This project consists of three binaries:
+
+1. `plasmad`, the Plasma node daemon itself.
+2. `plasmacli`, a CLI client for a querying `plasmad`.
+3. `plasma-harness`, a tool that simplifies local development by managing Ganache and Truffle processes.
+
+You likely won't need to run `plasma-harness` in production.
+
+## Prerequisites
+
+1. Golang: This is primarily a golang development environment.
+2. Go Modules: We use Go modules for dependency management.
+3. Node.js and npm
+4. Truffle.
+5. Ganache: Currently we use Ganache to test against a root chain.
+
+## Local Development Installation and Setup
+
+### 1. Checkout, install deps, and build:
+
+Prerequisites and local environment setup:
+
+```bash
+# install node/npm
+brew install node # for Mac / OSX env
+sudo apt install nodejs npm # for Linux/Ubuntu env
+
+# install go
+go env GOPATH # should be ~/go
+mkdir ~/go
+mkdir ~/go/bin
+mkdir ~/go/src
+
+export PATH=$PATH:~/go/bin
+
+# install blockchain tooling
+[sudo] npm install -g truffle@5.0.3
+[sudo] npm install -g ganache-cli
+
+# install jq
+brew install jq # for Mac / OSX env
+sudo apt-get install jq # for Linux/Ubuntu env
+```
+
+Plasma specific setup:
+
+```bash
+# Clone and setup the project
+cd /path/to/your/projects
+# Copy the plasma-master folder to your desired location
+cd plasma-master
+make deps # installs go dependencies / node dependencies
+make build-plasmad
+make build-plasmacli
+make build-harness
+```
+
+### 2. Start the harness:
+
+```bash
+./target/plasma-harness start
+```
+
+`plasma-harness` will start `ganache-cli` in deterministic mode with a fixed mnemonic and automatically deploy all smart contracts. Since `ganache-cli` is in deterministic mode, the smart contract's address will always be `0xF12b5dd4EAD5F743C6BaA640B0216200e89B60Da`.
+
+### 3. Start `plasmad`:
+
+`plasmad` uses a YAML config file. An example configuration file suitable for local development can be found in the `build` folder. We will assume that you will use that one while starting `plasmad`. To start `plasmad`, run:
+
+```bash
+./target/plasmad --config ./build/config-local.yaml start-root
+```
+
+### 4. Set up `plasmacli`:
+
+`plasmacli` requires a private key to sign deposits and transactions. It reads the private key from a file on-disk, and defaults to searching for it at `~/.plasma/key`. Since `plasma-harness` runs Ganache, you can use any one of the default Ganache accounts as the private key:
+
+```bash
+# private key for Ganache account index 1
+mkdir -p ~/.plasma
+echo "ae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f" > ~/.plasma/key
+```
+
+### 5. Deposit and send funds:
+
+You're ready to start sending money! Just make a deposit and send funds when you're ready:
+
+```bash
+./target/plasmacli deposit 0xF12b5dd4EAD5F743C6BaA640B0216200e89B60Da 1000000
+./target/plasmacli send 0x821aea9a577a9b44299b9c15c88cf3087f3b5544 100
+```
+
+Deposits require an on-chain transaction. Once you've deposited, though, new Plasma blocks are created every 100ms and feel effectively instant.
+
+## Running Integration Tests
+
+Integration tests are written in TypeScript in order to prove compatibility with other languages and dogfood our JavaScript libraries. To run them:
+
+1. Run `npm i` inside the `integration_tests` directory.
+2. Run `make test-integration` from the root of the repo.
+
+That's it! The test runner will set up a cleanroom environment to run the tests in, and output the results to your console.
