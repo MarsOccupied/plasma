@@ -15,6 +15,6 @@ require (
 	github.com/syndtr/goleveldb v1.0.0
 	
 
-	google.golang.org/grpc v1.16.0
+	google.golang.org/grpc 
 )
 
